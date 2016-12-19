@@ -26,5 +26,21 @@ Steps
   * `./mk_header.sh`
 7. Run analysis
   * `expression_allie.R`
+  
+Output
+--------
+RNA_to_DNA_.raw.full.pdf  - box plot with all genes and labeled fusions
+
+RNA_to_DNA_<gene>.raw.pdf – box plot by gene with labeled fusions
+
+RNA_to_DNA_ <gene> _exp.pdf – scatter plot with log10 ratio of rna to dna expression with labeled fusions
+
+RNA_to_DNA_normalized_by_housekeeping.full.pdf – box plot with all genes and labeled fusions normalized by MSMB, ERG, and TFEB
+
+RNA_to_DNA_normalized_by_housekeeping.pdf – subset of genes (ALK, BRD4, and ROS1)
+
+RNA_normalized_by_housekeeping.full.pdf – RNA expression normalized by MSMB, ERG, and TFEB
+
+RNA_normalized_by_housekeeping_subset.pdf - subset of genes (ALK, BRD4, and ROS1) RNA expression
 
 
