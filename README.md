@@ -25,7 +25,7 @@ Steps
 4. Put all bam paths on one line
   * `sed -e 's/\n/ /g' bam_files.txt > bam_files.oneline.txt`
 5. Calculate coverage of all targets for all samples
-  * `bedtools multicov -abam \`cat bam_files.oneline.txt\` -b expression.bed > coverage.txt`
+  * `bedtools multicov -bams \`cat bam_files.oneline.txt\` -bed expression.bed > coverage.txt`
 6. Fix the coverage file so that it has a header
   * `./mk_header.sh`
 7. Run analysis
