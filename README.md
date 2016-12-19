@@ -2,12 +2,16 @@ Expression
 ==========
 Calculate RNA to DNA ratio to quantify expression and plot the values along with the fusion information found
 
+![alt-text](https://github.com/alliemacleay/expression/blob/master/target_creation.png "Exon and intron targets")
+
+Choose targets at the exon closest to the primer 3 bases before the end of the exon and 3 bases after into to intron to measure rna coverage and dna coverage.
+
 Required files
 --------------
-Indexed BAM files
-targets.gtf
-exome locations - gencodeV24lift37.bed
-Fusion information file
+* Indexed BAM files
+* targets.gtf
+* exome locations - gencodeV24lift37.bed
+* Fusion information file
 
 Some of the file names are hardcoded so you will have to go into mk_header.sh and expression.R to edit the hardcoded names.
 
@@ -21,7 +25,7 @@ Steps
 4. Put all bam paths on one line
   * `sed -e 's/\n/ /g' bam_files.txt > bam_files.oneline.txt`
 5. Calculate coverage of all targets for all samples
-  * `bedtools multicov -abam \`cat bam_files.oneline.txt\` -b expression.bed > coverage.txt`
+  * `bedtools multicov -bams \`cat bam_files.oneline.txt\` -bed expression.bed > coverage.txt`
 6. Fix the coverage file so that it has a header
   * `./mk_header.sh`
 7. Run analysis
