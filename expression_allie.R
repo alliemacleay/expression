@@ -165,7 +165,7 @@ for(igene in genelist){
     ylab('RNA to DNA ratio, log10') +
     xlab('Sample') +
     ggtitle(paste('Gene expression of identified fusions:', igene, sep='\n'))
-  ggsave(file=paste('RNA_to_DNA_', igene, '_exp.pdf'), plot=plot, width=22.3, height=8.7)
+  ggsave(file=paste('RNA_to_DNA_', igene, '_exp.pdf', sep=''), plot=plot, width=22.3, height=8.7)
   plot
 }
 
@@ -186,6 +186,8 @@ gex.house$gex.h = gex.house$gex / gex.house$house
 # Full boxplot normalized by housekeeping genes
 pd = gex.house
 pd$label = ''
+pd$label <- unlist(lapply(pd$AP7, getLabel, fusion_info))  # labels for fusions in each sample
+pd$label <- unlist(fixLabels(pd))  # only label genes the fusion in present in
 plot1 = ggplot(data=pd, aes_string(x='Gene', y='gex.h',  color='Gene', label='label')) +
   geom_boxplot() +
   theme_bw() +
@@ -241,6 +243,7 @@ plotrna = ggplot(data=pd, aes_string(x='Gene', y='rna.h',  color='Gene', label='
   geom_text(col=2, hjust=runif(1, 0, 1), vjust=0.5, size=3) +
   ylab('RNA counts, normalized by median of 3 housekeeping genes') +
   scale_y_log10(limits=c(0.01, 100), breaks=c(0.01,0.1,1,10,100),labels=c('<= 0.01',0.1, 1, 10, '>=100')) +
+  theme(axis.text.x=element_text(angle=-90)) +
   ggtitle(paste('RNA expression (n=', length(unique(gex.house$AP7)), '), normalized by median of 3 housekeeping genes', sep=''))
 ggsave(file=paste('RNA_normalized_by_housekeeping.full.pdf', sep=''), plot=plotrna, width = 22.3, height = 8.7)
 
