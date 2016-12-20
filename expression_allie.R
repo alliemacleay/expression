@@ -129,11 +129,11 @@ plot0 = ggplot(data=gex, aes_string(x='Gene', y='gex',  color='Gene')) +
   geom_boxplot() +
   theme_bw() +
   geom_jitter(alpha=0.2) +
-  geom_text_repel(data=gex[gex$label!="",], aes(label=label), col=1, hjust=runif(1, 0, 1), vjust=0.5, size=3, angle=-30) +
+  geom_text_repel(data=gex[gex$label!="",], aes(label=label), col=1, size=3, angle=-30) +
   ylab('Ratio of cDNA-to-DNA coverage') +
   scale_y_log10(limits=c(0.01, 1000), breaks=c(0.01,0.1,1,10,100,1000),labels=c('<= 0.01',0.1, 1, 10, 100, '>=1000')) +
-  theme(axis.text.x=element_text(angle=-90)) +
-  ggtitle(paste('RNA/DNA expression ratio (n=', length(unique(gex$AP7)), ')', sep=''))
+  ggtitle(paste('RNA/DNA expression ratio (n=', length(unique(gex$AP7)), ')', sep='')) +
+  theme(plot.title = element_text(size=25, hjust=0.5), axis.text.x=element_text(angle=-90))
 
 plot0
 ggsave(file=paste('RNA_to_DNA_.raw.full.pdf', sep=''), plot=plot0, width = 22.3, height = 8.7)
@@ -149,7 +149,8 @@ for(igene in genelist){
     geom_text(col=2, hjust=runif(1, 0, 1), vjust=0.5, size=3) +
     ylab('Ratio of cDNA-to-DNA coverage') +
     scale_y_log10(limits=c(0.01, 100), breaks=c(0.01,0.1,1,10,100),labels=c('<= 0.01',0.1, 1, 10, '>=100')) +
-    ggtitle(paste('RNA/DNA expression ratio: ', igene, ' (n=', length(unique(gex$AP7)), ')', sep=''))
+    ggtitle(paste('RNA/DNA expression ratio: ', igene, ' (n=', length(unique(gex$AP7)), ')', sep='')) +
+    theme(plot.title = element_text(size=25, hjust=0.5))
   ggsave(file=paste('RNA_to_DNA_', igene, '.raw.pdf', sep=''), plot=plot0, width = 22.3, height = 8.7)
   plot0
   
@@ -167,8 +168,9 @@ for(igene in genelist){
     theme_bw() +
     ylab('RNA to DNA ratio, log10') +
     xlab('Sample') +
-    scale_color_gradient(limits=c(0,4), low="blue", high="red", guide_legend(title="Expression")) +
-    ggtitle(paste('Gene expression of identified fusions:', igene, sep='\n'))
+    scale_colour_gradient2(limits=c(0,4), low="blue", high="red", mid="grey", midpoint=1.5, guide_legend(title="Expression")) +
+    ggtitle(paste('Gene expression of identified fusions:', igene, sep='\n')) +
+    theme(plot.title = element_text(size=25, hjust=0.5))
   plot
   ggsave(file=paste('RNA_to_DNA_', igene, '_exp.pdf', sep=''), plot=plot, width=22.3, height=8.7)
 }
@@ -199,8 +201,8 @@ plot1 = ggplot(data=pd, aes_string(x='Gene', y='gex.h',  color='Gene')) +
   geom_text_repel(data=pd[gex$label!="",], aes(label=label), col=1, size=3, angle=-30) +
   ylab('Ratio of cDNA-to-DNA coverages, normalized by median of 3 housekeeping genes') +
   scale_y_log10(limits=c(0.01, 100), breaks=c(0.01,0.1,1,10,100),labels=c('<= 0.01',0.1, 1, 10, '>=100')) +
-  theme(axis.text.x=element_text(angle=-90)) +
-  ggtitle(paste('RNA/DNA expression ratio (n=', length(unique(gex.house$AP7)), '), normalized by median of 3 housekeeping genes', sep=''))
+  ggtitle(paste('RNA/DNA expression ratio (n=', length(unique(gex.house$AP7)), '), normalized by median of 3 housekeeping genes', sep='')) +
+  theme(axis.text.x=element_text(angle=-90), plot.title = element_text(size=25, hjust=0.5))
 
 plot1
 ggsave(file=paste('RNA_to_DNA_normalized_by_housekeeping.full.pdf', sep=''), plot=plot1, width = 22.3, height = 8.7)
@@ -214,7 +216,8 @@ plot1 = ggplot(data=pd, aes_string(x='Gene', y='gex.h',  color='Gene', label='la
   geom_text(col=2, hjust=runif(1, 0, 1), vjust=0.5, size=3) +
   ylab('Ratio of cDNA-to-DNA coverages, normalized by median of 3 housekeeping genes') +
   scale_y_log10(limits=c(0.01, 100), breaks=c(0.01,0.1,1,10,100),labels=c('<= 0.01',0.1, 1, 10, '>=100')) +
-  ggtitle(paste('RNA/DNA expression ratio, (n=', length(unique(gex.house$AP7)), '), normalized by median of 3 housekeeping genes', sep=''))
+  ggtitle(paste('RNA/DNA expression ratio, (n=', length(unique(gex.house$AP7)), '), normalized by median of 3 housekeeping genes', sep=''))+
+  theme(axis.text.x=element_text(angle=-90), plot.title = element_text(size=25, hjust=0.5))
 
 ggsave(file=paste('RNA_to_DNA_normalized_by_housekeeping.pdf', sep=''), plot=plot1, width = 11.3, height = 8.7)
 
@@ -244,11 +247,11 @@ plotrna = ggplot(data=pd, aes_string(x='Gene', y='rna.h',  color='Gene', label='
   geom_boxplot() +
   theme_bw() +
   geom_jitter(alpha=0.2) +
-  geom_text(col=2, hjust=runif(1, 0, 1), vjust=0.5, size=3) +
+  geom_text_repel(data=pd[gex$label!="",], aes(label=label), col=1, size=3, angle=-30) +
   ylab('RNA counts, normalized by median of 3 housekeeping genes') +
   scale_y_log10(limits=c(0.01, 100), breaks=c(0.01,0.1,1,10,100),labels=c('<= 0.01',0.1, 1, 10, '>=100')) +
-  theme(axis.text.x=element_text(angle=-90)) +
-  ggtitle(paste('RNA expression (n=', length(unique(gex.house$AP7)), '), normalized by median of 3 housekeeping genes', sep=''))
+  ggtitle(paste('RNA expression (n=', length(unique(gex.house$AP7)), '), normalized by median of 3 housekeeping genes', sep='')) +
+  theme(axis.text.x=element_text(angle=-90), plot.title = element_text(size=25, hjust=0.5), axis.text.x=element_text(angle=-90))
 ggsave(file=paste('RNA_normalized_by_housekeeping.full.pdf', sep=''), plot=plotrna, width = 22.3, height = 8.7)
 
 pd = subset(rna.house, Gene %in% c('GAPDH','CTBP1','B2M','BRD4','JAK1','ERBB2','PRKACA','ALK','ROS1'))
