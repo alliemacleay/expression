@@ -2,6 +2,7 @@ library(matrixStats)
 library(reshape2)
 library(MASS)
 library('ggplot2')
+library(ggrepel)  # relies on ggplot2 version 2.2.0
 library(plyr)
 
 ## ~~ Functions ~~
@@ -124,11 +125,11 @@ gex$label <- unlist(lapply(gex$AP7, getLabel, fusion_info))  # labels for fusion
 gex$label <- unlist(fixLabels(gex))  # only label genes the fusion in present in
 
 # Full boxplot
-plot0 = ggplot(data=gex, aes_string(x='Gene', y='gex',  color='Gene', label='label')) +
+plot0 = ggplot(data=gex, aes_string(x='Gene', y='gex',  color='Gene')) +
   geom_boxplot() +
   theme_bw() +
   geom_jitter(alpha=0.2) +
-  geom_text(col=2, hjust=runif(1, 0, 1), vjust=0.5, size=3, angle=-30) +
+  geom_text_repel(data=gex[gex$label!="",], aes(label=label), col=1, hjust=runif(1, 0, 1), vjust=0.5, size=3, angle=-30) +
   ylab('Ratio of cDNA-to-DNA coverage') +
   scale_y_log10(limits=c(0.01, 1000), breaks=c(0.01,0.1,1,10,100,1000),labels=c('<= 0.01',0.1, 1, 10, 100, '>=1000')) +
   theme(axis.text.x=element_text(angle=-90)) +
@@ -159,14 +160,17 @@ for(igene in genelist){
   }
   nd$label[-idx] <- ''
   nd <- nd[!is.na(nd$gex),]
-  plot <- ggplot(nd, aes(x=c(1:dim(nd)[1]), y=nd$gex, label='label')) + geom_point(position="jitter") +
-    geom_text(aes(label=nd$label, colour=c(1:length(nd$label))*200, nudge_x=10, angle=-30), size = 3) +
+  fusion = factor(ifelse(nd$label=="", " WT", "fusion"))
+  plot <- ggplot(nd, aes(x=c(1:dim(nd)[1]), y=nd$gex, label='label', data=nd$gex)) + 
+    geom_point(position="jitter", aes(colour=nd$gex, size=fusion)) +
+    geom_text(aes(label=nd$label, vjust=-1.5, hjust=1.3, angle=-25)) + 
     theme_bw() +
     ylab('RNA to DNA ratio, log10') +
     xlab('Sample') +
+    scale_color_gradient(limits=c(0,4), low="blue", high="red", guide_legend(title="Expression")) +
     ggtitle(paste('Gene expression of identified fusions:', igene, sep='\n'))
-  ggsave(file=paste('RNA_to_DNA_', igene, '_exp.pdf', sep=''), plot=plot, width=22.3, height=8.7)
   plot
+  ggsave(file=paste('RNA_to_DNA_', igene, '_exp.pdf', sep=''), plot=plot, width=22.3, height=8.7)
 }
 
 ## ~~ Calculate variance in genes by sample ~~
@@ -188,11 +192,11 @@ pd = gex.house
 pd$label = ''
 pd$label <- unlist(lapply(pd$AP7, getLabel, fusion_info))  # labels for fusions in each sample
 pd$label <- unlist(fixLabels(pd))  # only label genes the fusion in present in
-plot1 = ggplot(data=pd, aes_string(x='Gene', y='gex.h',  color='Gene', label='label')) +
+plot1 = ggplot(data=pd, aes_string(x='Gene', y='gex.h',  color='Gene')) +
   geom_boxplot() +
   theme_bw() +
   geom_jitter(alpha=0.2) +
-  geom_text(col=2, hjust=runif(1, 0, 1), vjust=0.5, size=3, angle=-30) +
+  geom_text_repel(data=pd[gex$label!="",], aes(label=label), col=1, size=3, angle=-30) +
   ylab('Ratio of cDNA-to-DNA coverages, normalized by median of 3 housekeeping genes') +
   scale_y_log10(limits=c(0.01, 100), breaks=c(0.01,0.1,1,10,100),labels=c('<= 0.01',0.1, 1, 10, '>=100')) +
   theme(axis.text.x=element_text(angle=-90)) +
