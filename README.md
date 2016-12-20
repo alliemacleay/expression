@@ -2,11 +2,11 @@ Expression
 ==========
 Calculate RNA to DNA ratio to quantify expression and plot the values along with the fusion information found
 
-Allison MacLeay
+Allison MacLeay, M.S.
 
-Zongli Zheng
+Zongli Zheng, Ph.D.
 
-Richard Schmitd
+Richard Schmidt, M.D., Ph.D.
 
 ![alt-text](https://github.com/alliemacleay/expression/blob/master/target_creation.png "Exon and intron targets")
 
