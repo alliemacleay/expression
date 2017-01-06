@@ -36,6 +36,11 @@ Steps
   * `./mk_header.sh`
 7. Run analysis
   * `expression_allie.R`
+
+
+Methods
+--------
+The bed file with the targets for the panel is used in conjunction with the coordinates of all exons in the genome pulled from the UCSC genome browser (gencodeV24lift37.bed) to create a new bed file that has targets 3 bases before the exon-intron junction in the exon and 3 bases after in the intron.  The coverage at these locations is used to calculate the amount of DNA and RNA in the exon and DNA only in the intron.  The R script provided uses these values to calculate the expression ratio.  It also takes in a fusion data file and parses it to flag the samples with known fusions.  The boxplots show the log10 ratios of expression with the known fusions involving each gene labeled.  For each gene the ratios are plotted and the fusion is labeled.  Normalization is done by subsetting the data by 3 genes, finding the median expression ratio for each sample in these genes, and dividing the raw expression value by the sample median.  The plots are created for these normalized values.  The same method is applied to the raw RNA expression values. 
   
 Output
 --------
