@@ -27,7 +27,7 @@ Steps
   * `python multicov_bed_file_generator.py --exome-file gencodeV24lift37.bed --primer-bed targets.gtf --output-file expression.bed`
 2. Copy all bams and their index files to a directory
 3. Make a file with the bam paths
-  * `ls bam_dir > bam_files.txt`
+  * `ls bam_dir/*.bam > bam_files.txt`
 4. Put all bam paths on one line
   * `sed -e ':a;N;$!ba;s/\n/ /g' bam_files.txt > bam_files.oneline.txt`
 5. Calculate coverage of all targets for all samples (single quote is a backtick).  Note - if you did not create the bam file list with the full paths you will need to be in the bam directory to run the following command.
