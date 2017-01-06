@@ -29,7 +29,7 @@ Steps
 3. Make a file with the bam paths
   * `ls bam_dir > bam_files.txt`
 4. Put all bam paths on one line
-  * `sed -e 's/\n/ /g' bam_files.txt > bam_files.oneline.txt`
+  * `sed -e ':a;N;$!ba;s/\n/ /g' bam_files.txt > bam_files.oneline.txt`
 5. Calculate coverage of all targets for all samples (single quote is a backtick)
   * `bedtools multicov -bams 'cat bam_files.oneline.txt' -bed expression.bed > coverage.txt`
 6. Fix the coverage file so that it has a header
